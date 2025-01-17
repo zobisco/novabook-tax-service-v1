@@ -22,7 +22,6 @@ export class TaxPositionService {
     }
 
     const transactions = await this.transactionRepo.find({
-			// where: { date: LessThanOrEqual(queryDate) },
 			relations: ['items'],
 		});
 
