@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  novabook-tax-service:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./novabook.sqlite:/app/novabook.sqlite
+    environment:
+      - NODE_ENV=production
+    command: npm run migration:run && npm run start
