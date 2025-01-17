@@ -39,8 +39,8 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/novabook-api.git
-   cd novabook-api
+   git clone https://github.com/zobisco/novabook-tax-service-v1.git
+   cd novabook-tax-service
    ```
 
 2. Install dependencies:
