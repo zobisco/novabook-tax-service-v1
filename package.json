@@ -5,8 +5,8 @@
   "scripts": {
     "build": "tsc",
     "docker:build": "docker build -t novabook-tax-service .",
-    "docker:run": "docker run -d -p 3000:3000 --name novabook-container novabook-tax-service",
-    "docker:restart": "npm run docker:stop && npm run docker:remove && npm run docker:build && npm run docker:run",
+    "docker:run": "docker run -d -p 3000:3000 --name novabook-container novabook-tax-service sh -c 'npm run migration:run && npm run start'",
+    "docker:restart": "npm run docker:stop && npm run docker:remove && npm run docker:build && npm run docker:run && npm run docker:logs",
     "docker:stop": "docker stop novabook-container || true",
     "docker:remove": "docker rm novabook-container || true",
     "docker:logs": "docker logs -f novabook-container",
@@ -17,7 +17,7 @@
     "migration:create": "typeorm migration:create ./src/database/migrations/{name}",
     "restart": "npm run migration:revert && rm -rf ./novabook.sqlite && rm -rf dist && npm run build && npm run migration:run && npm run start:dev",
     "setup": "npm install && npm run build && npm run migration:run && npm run start:dev",
-    "start": "node dist/src/main.js",
+    "start": "npm run migration:run && node dist/src/main.js",
     "start:dev": "nest start --watch",
     "test": "npx jest --config jest.config.ts",
     "typeorm": "typeorm-ts-node-esm -d ./dist/dataSource.ts"

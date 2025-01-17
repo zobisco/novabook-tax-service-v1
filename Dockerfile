@@ -25,5 +25,8 @@ WORKDIR /app/dist/src
 # Expose the application's port
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "main.js"]
+# Run migration files
+RUN npm run migration:run
+
+# Start the application and run migrations at runtime
+CMD ["sh", "-c", "npm run migration:run && node main.js"]
