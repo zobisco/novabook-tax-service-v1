@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as YAML from 'yaml';
 
 async function bootstrap() {
@@ -14,8 +15,15 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  const yamlString = YAML.stringify(document);
-  fs.writeFileSync('./src/docs/openapi-spec.yaml', yamlString, 'utf8');
+  // ✅ Ensure the `docs` directory exists inside Docker
+  const docsDir = path.resolve(__dirname, '../docs');
+  if (!fs.existsSync(docsDir)) {
+    fs.mkdirSync(docsDir, { recursive: true });
+  }
+
+  // ✅ Use an absolute path for OpenAPI YAML file
+  const yamlFilePath = path.join(docsDir, 'openapi-spec.yaml');
+  fs.writeFileSync(yamlFilePath, YAML.stringify(document), 'utf8');
 
   SwaggerModule.setup('api', app, document);
 

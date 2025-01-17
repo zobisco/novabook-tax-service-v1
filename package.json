@@ -4,6 +4,12 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
+    "docker:build": "docker build -t novabook-tax-service .",
+    "docker:run": "docker run -p 3000:3000 --name novabook-container novabook-tax-service",
+    "docker:restart": "docker stop novabook-container && docker rm novabook-container && npm run docker:build && npm run docker:run",
+    "docker:stop": "docker stop novabook-container",
+    "docker:remove": "docker rm novabook-container",
+    "docker:logs": "docker logs -f novabook-container",
     "migration:run": "typeorm migration:run -d ./dist/src/dataSource.js",
     "migration:revert": "typeorm migration:revert -d ./dist/src/dataSource.js",
     "migration:show": "typeorm migration:show -d ./dist/src/dataSource.js",
