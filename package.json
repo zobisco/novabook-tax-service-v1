@@ -15,7 +15,7 @@
     "migration:show": "typeorm migration:show -d ./dist/src/dataSource.js",
     "migration:generate": "typeorm migration:generate -d ./dist/src/dataSource.ts",
     "migration:create": "typeorm migration:create ./src/database/migrations/{name}",
-    "restart": "npm run migration:revert && rm -rf ./novabook.sqlite && rm -rf dist && npm run build && npm run migration:run && npm run start:dev",
+    "restart": "npm run migration:revert && rm -rf ./novabook.sqlite && rm -rf dist && rm -rf src/docs/openapi-spec.yaml && npm run build && npm run migration:run && npm run start",
     "setup": "npm install && npm run build && npm run migration:run && npm run start:dev",
     "start": "npm run migration:run && node dist/src/main.js",
     "start:dev": "nest start --watch",
