@@ -15,22 +15,17 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  // ✅ Ensure the `docs` directory exists inside Docker
-  const docsDir = path.resolve(__dirname, '../docs');
-  if (!fs.existsSync(docsDir)) {
-    fs.mkdirSync(docsDir, { recursive: true });
-  }
+  const docsDir = path.resolve(__dirname.includes('dist') ? path.join(__dirname, '../../src/docs') : path.join(__dirname, 'docs'));
 
-  // ✅ Use an absolute path for OpenAPI YAML file
   const yamlFilePath = path.join(docsDir, 'openapi-spec.yaml');
   fs.writeFileSync(yamlFilePath, YAML.stringify(document), 'utf8');
 
   SwaggerModule.setup('api', app, document);
 
   const PORT = process.env.PORT || 3000;
-
   await app.listen(PORT);
-  console.log(`Application is running at http://localhost:${PORT}`);
-  console.log(`API documentation available at http://localhost:${PORT}/api`);
+  console.log(`🚀 Application running at http://localhost:${PORT}`);
+  console.log(`📘 API docs available at http://localhost:${PORT}/api`);
 }
+
 bootstrap();
