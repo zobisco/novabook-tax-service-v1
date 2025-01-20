@@ -58,6 +58,29 @@ paths:
       summary: Get the tax position for a specific date
       tags:
         - tax-position
+  /transactions/{id}:
+    get:
+      operationId: TransactionController_getTransactionById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Transaction ID
+          schema:
+            example: "1"
+            type: string
+      responses:
+        "200":
+          description: Transaction found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionEntity"
+        "404":
+          description: Transaction not found
+      summary: Get transaction by ID
+      tags: &a1
+        - transactions
   /transactions:
     get:
       operationId: TransactionController_getAllTransactions
@@ -72,8 +95,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/TransactionEntity"
       summary: Get all transactions
-      tags: &a1
-        - transactions
+      tags: *a1
     post:
       operationId: TransactionController_createTransaction
       parameters: []
