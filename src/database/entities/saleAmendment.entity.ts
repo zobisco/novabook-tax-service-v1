@@ -20,9 +20,6 @@ export class SaleAmendmentEntity {
   @Column({ type: 'float' })
   taxRate: number;
 
-  @Column({ type: 'integer', nullable: true })
-  taxPosition?: number;
-
   constructor(
     id: string,
     date: Date,
