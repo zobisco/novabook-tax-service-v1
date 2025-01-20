@@ -1,5 +1,5 @@
-import { Controller, Post, Body, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiBody, ApiOperation } from '@nestjs/swagger';
+import { Controller, Post, Body, Get, HttpException, HttpStatus, Query, Param } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { TransactionService } from '../services/transaction.service';
 import { TransactionDto } from '../dtos/transaction.dto';
 import { TransactionEntity } from '../database/entities/transaction.entity';
@@ -8,6 +8,35 @@ import { TransactionEntity } from '../database/entities/transaction.entity';
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get transaction by ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'Transaction ID',
+    example: '1',
+    required: true,
+    type: String,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Transaction found',
+    type: TransactionEntity,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Transaction not found',
+  })
+  async getTransactionById(@Param('id') id: string): Promise<TransactionEntity> {
+    try {
+      return await this.transactionService.getTransactionById(id);
+    } catch (error) {
+      throw new HttpException(
+        `Error fetching transaction: ${error}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all transactions' })
